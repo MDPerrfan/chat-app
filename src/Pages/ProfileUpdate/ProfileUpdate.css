@@ -53,6 +53,7 @@ textarea {
     min-width: 300px;
     border: 1px solid #c9c9c9;
     outline-color: coral;
+    border-radius: 4px;
 }
 
 .profile form button {
@@ -62,4 +63,9 @@ textarea {
     padding: 8px;
     font-size: 15px;
     cursor: pointer;
+    border-radius: 5px;
+}
+
+.profile form button:hover {
+    background-color: rgb(254, 104, 49);
 }

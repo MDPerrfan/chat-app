@@ -5,7 +5,7 @@ const Chatbox = () => {
   return (
     <div className='chat-box'>
       <div className="chat-user">
-        <img src={assests.profile} alt="profile" className='profile' />
+        <img src={assests.profile} alt="profile" className='profilem' />
         <p>Richard <img src={assests.dot} alt="active" /></p>
         <img src={assests.help} alt="help" className='help' />
       </div>
