@@ -15,13 +15,10 @@ const ProfileUpdate = () => {
   const [bio, setBio] = useState("");
   const [uid, setUid] = useState("");
   const [prevImage, setPrevImage] = useState("")
-  const {setUserData}=useContext(AppContext)
+  const {setUserdata}=useContext(AppContext)
   const profileUpdate = async (e) => {
     e.preventDefault();
     try {
-      if (!prevImage && image) {
-        toast.error("Upload profile picture!")
-      }
       const docRef = doc(db, "users", uid)
       if (image) {
         const imgUrl = await upload(image);
@@ -31,6 +28,7 @@ const ProfileUpdate = () => {
           bio: bio,
           name: name
         })
+        toast.success("Profile Updated Successfully!")
       } else {
         await updateDoc(docRef, {
           bio: bio,
@@ -38,7 +36,7 @@ const ProfileUpdate = () => {
         })
       }
       const snap = await getDoc(docRef);
-      setUserData(snap.data);
+      setUserdata(snap.data());
       navigate('/chat')
     } catch (error) {
       console.log(error)
