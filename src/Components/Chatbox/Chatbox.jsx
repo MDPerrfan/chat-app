@@ -190,7 +190,7 @@ const Chatbox = () => {
       </div>
     </div>
   ) : (
-    <div className={`chat-welcome ${chatVisible?"":"hidden"}`}>
+    <div className={`chatWelcome ${chatVisible?"":"hidden"}`}>
       <img src={assests.logo} alt="logo" />
       <p>Chat as you want!!</p>
     </div>

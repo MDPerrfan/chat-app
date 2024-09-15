@@ -133,8 +133,13 @@
     font-weight: 500;
 }
 
+.menu {
+    cursor: pointer;
+}
+
 .chat-user .arrow {
     display: none;
+    cursor: pointer;
 }
 
 @media(max-width:900px) {

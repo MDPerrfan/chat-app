@@ -90,11 +90,9 @@
     .rs {
         width: 100%;
     }
-}
-
-@media(max-width:768px) {
     .arrow2 {
         display: block;
         margin: 10px 10px;
+        cursor: pointer;
     }
 }
