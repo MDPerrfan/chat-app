@@ -1,28 +1,42 @@
-import React from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import './RightSidebar.css'
 import assests from '../../assets/assests'
 import { logout } from '../../Config/firebase'
+import { AppContext } from '../../Context/AppContext'
 const RightSidebar = () => {
-  return (
+  const {chatuser,messages}=useContext(AppContext);
+  const [mssgImages,setMssgimages]=useState([])
+  useEffect(()=>{
+    let temp = [];
+    messages.map((mssg)=>{
+      if(mssg.image){
+        temp.push(mssg.image)
+      }
+    })
+    setMssgimages(temp)
+  },[messages])
+
+  return chatuser? (
     <div className='rs'>
       <div className="rs-profile">
-        <img src={assests.profile} alt="profile" />
-        <h3>Richard Ray <img src={assests.dot} alt="d" className='dot' /></h3>
-        <p>Lorem ipsum dolor sit amet.</p>
+        <img src={chatuser.userData.avatar} alt="profile" />
+        <h3>{chatuser.userData.name}{Date.now()-chatuser.userData.lastSeen<=7000?<img src={assests.dot} className='dot' alt="active" />:""}</h3>
+        <p>{chatuser.userData.bio}</p>
       </div>
       <hr />
       <div className="rs-media">
         <p>Media</p>
         <div>
-          <img src={assests.profile} alt="" />
-          <img src={assests.profile} alt="" />
-          <img src={assests.profile} alt="" />
-          <img src={assests.profile} alt="" />
-          <img src={assests.profile} alt="" />
-          <img src={assests.profile} alt="" />
+          {mssgImages.map((url,index)=>(
+             <img onClick={()=>window.open(url)} src={url} key={index} alt="pics" />
+          ))}
         </div>
       </div>
       <button onClick={()=>logout()}>Logout</button>
+    </div>
+  ): (
+    <div className='rs'>
+      <button onClick={()=>logout}>Logout</button>
     </div>
   )
 }

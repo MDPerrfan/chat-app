@@ -8,6 +8,11 @@
     background-size: cover;
 }
 
+.login h1 {
+    color: aliceblue;
+    font-weight: 500;
+}
+
 .login .logo {
     width: max(20vw, 200px);
 }
@@ -68,4 +73,12 @@
     font-weight: 500;
     color: coral;
     cursor: pointer;
+}
+
+@media(max-width:768px) {
+    .login {
+        flex-direction: column;
+        justify-content: center;
+        gap: 30px;
+    }
 }

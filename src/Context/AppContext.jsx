@@ -11,7 +11,8 @@ const AppContextProvider = (props) => {
     const [chatsData, setchatData] = useState([]);
     const [messageId ,setmessageId ]=useState(null);
     const [messages,setMessages]=useState([]);
-    const [chatuser,setChatuser]=useState(null)
+    const [chatuser,setChatuser]=useState(null);
+    const [chatVisible,setChatVisible]=useState(false)
     const loadUserData = async (uid) => {
         try {
           const userRef = doc(db, "users", uid); // Ensure correct path
@@ -70,7 +71,8 @@ const AppContextProvider = (props) => {
 
     const value = {
         userData, setUserdata, chatsData, setchatData,
-        loadUserData,messages,setMessages,messageId ,setmessageId ,setChatuser,chatuser
+        loadUserData,messages,setMessages,messageId ,setmessageId ,setChatuser,chatuser,
+        chatVisible,setChatVisible
     }
     return (
         <AppContext.Provider value={value}>

@@ -78,3 +78,9 @@
     cursor: pointer;
     border: none;
 }
+
+@media(max-width:900px) {
+    .rs {
+        display: none;
+    }
+}

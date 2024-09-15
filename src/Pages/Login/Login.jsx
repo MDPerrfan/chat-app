@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import "./Login.css"
 import assests from '../../assets/assests'
-import {login, signUp} from "../../Config/firebase"
+import {login, signUp,resetPass} from "../../Config/firebase"
 const Login = () => {
     const [curr, setCurrent] = useState("Sign Up");
     const [userName,setuserName]=useState("");
@@ -18,6 +18,7 @@ const Login = () => {
     return (
         <div className='login'>
             <img className='logo' src={assests.logo} alt="logo" />
+            <h1>P-Chatt</h1>
             <form onSubmit={(e)=>onSubmitHandler(e)} className="login-form">
                 <h2>{curr}</h2>
                 {curr === "Sign Up" ? <input onChange={(e)=>setuserName(e.target.value)} value={userName} className='form-input' type="text" placeholder='User Name' /> : ""}
@@ -32,6 +33,9 @@ const Login = () => {
                     <div className="login-toggle">
                     {curr === "Login" ? <p>Create a new account? <span onClick={() => setCurrent("Sign Up")}>Click here</span></p>
                         : <p>Already have an account? <span onClick={() => setCurrent("Login")}>Login here</span></p>
+                    }
+                    {curr==="Login"? <p>Forgot password? <span onClick={() => resetPass(email)}>Reset here</span></p>
+                    :null
                     }
                     </div>
                    

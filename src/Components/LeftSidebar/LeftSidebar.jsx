@@ -1,13 +1,13 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import './LeftSidebar.css'
 import assests from '../../assets/assests'
 import { useNavigate } from 'react-router-dom'
-import { arrayUnion, collection, doc, getDocs, query, serverTimestamp, setDoc, updateDoc, where } from 'firebase/firestore'
+import { arrayUnion, collection, doc, getDoc, getDocs, query, serverTimestamp, setDoc, updateDoc, where } from 'firebase/firestore'
 import { db } from '../../Config/firebase'
 import { AppContext } from '../../Context/AppContext'
 import { toast } from 'react-toastify'
 const LeftSidebar = () => {
-    const { userData, chatsData,chatuser,setChatuser,setmessageId ,messageId  } = useContext(AppContext);
+    const { userData, chatsData,chatuser,setChatuser,setmessageId ,messageId,chatVisible,setChatVisible  } = useContext(AppContext);
     const [user, setUser] = useState("");
     const [showSearch, setShowSearch] = useState(false);
     const inputHandler = async (e) => {
@@ -58,18 +58,67 @@ const LeftSidebar = () => {
                     messageSeen: true
                 })
             })
+            const uSnap = await getDoc(doc(db,"users",user.id));
+            const uData = uSnap.data();
+            setChat({
+                messageId:newMssgRef.id,
+                lastMessage:"",
+                rId:user.id,
+                updatedAt:Date.now(),
+                messageSeen:true,
+                userData:uData
+            })
+            setShowSearch(false)
+            setChatVisible(true)
         } catch (error) {
             toast.error(error.message)
             console.error(error)
         }
     }
-    const setChat=async(item)=>{
-        setmessageId (item.messageId);
-        setChatuser(item)
-    }
-    const navigate = useNavigate()
+    const setChat = async (item) => {
+        try {
+          setmessageId(item.messageId);
+          setChatuser(item);
+          
+          const userChatRef = doc(db, "chats", userData.id);
+          const userChatsSnapshot = await getDoc(userChatRef);
+      
+          if (userChatsSnapshot.exists()) {
+            const userChatsData = userChatsSnapshot.data();
+            const chatIndex = userChatsData.chatsData.findIndex(
+              (c) => c.messageId === item.messageId
+            );
+      
+            if (chatIndex !== -1) {
+              // Mark the chat as seen
+              userChatsData.chatsData[chatIndex].messageSeen = true;
+              
+              await updateDoc(userChatRef, {
+                chatsData: userChatsData.chatsData,
+              });
+            }
+          }
+          setChatVisible(true)
+        } catch (error) {
+          toast.error(error.message);
+        }
+      };
+      
+    const navigate = useNavigate();
+
+    useEffect(()=>{
+        const updateChatUserData = async()=>{
+        if(chatuser){
+            const userRef = doc(db,"users",chatuser.userData.id);
+            const userSnap = await getDoc(userRef);
+            const userData = userSnap.data();
+            setChatuser(prev=>({...prev,userData:userData}))
+        }
+        }
+        updateChatUserData()
+    },[chatsData])
     return (
-        <div className='ls'>
+        <div className={`ls ${chatVisible?"hidden":""}`}>
             <div className="ls-top">
                 <div className="ls-nav">
                     <img src={assests.mssg} alt="logo" className='logo' />
@@ -94,7 +143,7 @@ const LeftSidebar = () => {
                         </div>
                         :
                         chatsData.map((item, index) => (
-                            <div onClick={()=>setChat(item)} key={index} className="friends">
+                            <div onClick={()=>setChat(item)} key={index} className={`friends ${item.messageSeen || item.messageId === messageId ? "":"border"}`}>
                                 <img src={item.userData.avatar} alt="avatar" />
                                 <div>
                                     <p>{item.userData.name}</p>

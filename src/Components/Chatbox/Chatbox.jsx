@@ -7,7 +7,7 @@ import { db } from '../../Config/firebase.js';
 import { toast } from 'react-toastify';
 import  upload  from '../lib/upload'
 const Chatbox = () => {
-  const { userData, messageId, chatuser, messages, setMessages } = useContext(AppContext);
+  const { userData, messageId, chatuser, messages, setMessages,chatVisible,setChatVisible } = useContext(AppContext);
   const [input, setInput] = useState("");
 
   const sendMessage = async () => {
@@ -21,32 +21,33 @@ const Chatbox = () => {
             createdAt: new Date(),
           }),
         });
-
+  
         const userIDs = [chatuser.rId, userData.id];
-        userIDs.forEach(async (id) => {
+  
+        for (const id of userIDs) {
           const userChatRef = doc(db, "chats", id);
           const userChatSnapshot = await getDoc(userChatRef);
-
+  
           if (userChatSnapshot.exists()) {
             const userChatData = userChatSnapshot.data();
-
-            // Ensure chatsData exists
+  
             if (!userChatData.chatsData) {
               userChatData.chatsData = [];
             }
-
+  
             const chatIndex = userChatData.chatsData.findIndex(
               (c) => c.messageId === messageId
             );
-
+  
             if (chatIndex !== -1) {
               userChatData.chatsData[chatIndex].lastMessage = input.slice(0, 30);
               userChatData.chatsData[chatIndex].updateAt = Date.now();
-
-              if (userChatData.chatsData[chatIndex].rId === userData.id) {
+  
+              // Only set messageSeen to false for the other user
+              if (userChatData.chatsData[chatIndex].rId !== userData.id) {
                 userChatData.chatsData[chatIndex].messageSeen = false;
               }
-
+  
               await updateDoc(userChatRef, {
                 chatsData: userChatData.chatsData,
               });
@@ -56,21 +57,22 @@ const Chatbox = () => {
                 lastMessage: input.slice(0, 30),
                 updateAt: Date.now(),
                 rId: chatuser.rId,
-                messageSeen: false,
+                messageSeen: id === userData.id,  // Set seen for self, not for recipient
               });
-
+  
               await updateDoc(userChatRef, {
                 chatsData: userChatData.chatsData,
               });
             }
           }
-        });
+        }
       }
     } catch (error) {
       toast.error(error.message);
     }
     setInput("");
   };
+  
   const sendImage = async (e) => {
     try {
       const fileUrl = await upload(e.target.files[0]);
@@ -153,11 +155,13 @@ const Chatbox = () => {
   }, [messageId]);
 
   return chatuser ? (
-    <div className='chat-box'>
+    <div className={`chat-box ${chatVisible?"":"hidden"}`}>
       <div className="chat-user">
         <img src={chatuser.userData.avatar} alt="profile" className='profilem' />
-        <p>{chatuser.userData.name}<img src={assests.dot} alt="active" /></p>
+        <p>{chatuser.userData.name}{Date.now()-chatuser.userData.lastSeen<=7000?<img src={assests.dot} alt="active" />:""}</p>
         <img src={assests.help} alt="help" className='help' />
+        <img onClick={()=>setChatVisible(false)} src={assests.arrow} alt="arrow" className='arrow' />
+
       </div>
       <div className="chat-mssg">
         {messages.map((msg, index) => (
@@ -186,7 +190,7 @@ const Chatbox = () => {
       </div>
     </div>
   ) : (
-    <div className='chatWelcome'>
+    <div className={`chat-welcome ${chatVisible?"":"hidden"}`}>
       <img src={assests.logo} alt="logo" />
       <p>Chat as you want!!</p>
     </div>
