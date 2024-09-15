@@ -4,7 +4,7 @@ import assests from '../../assets/assests'
 import { logout } from '../../Config/firebase'
 import { AppContext } from '../../Context/AppContext'
 const RightSidebar = () => {
-  const {chatuser,messages}=useContext(AppContext);
+  const {chatuser,messages,rightVisible,setRightVisible}=useContext(AppContext);
   const [mssgImages,setMssgimages]=useState([])
   useEffect(()=>{
     let temp = [];
@@ -17,7 +17,8 @@ const RightSidebar = () => {
   },[messages])
 
   return chatuser? (
-    <div className='rs'>
+    <div className={`rs ${rightVisible?"":"hidden"}`}>
+      <img onClick={()=>setRightVisible(false)} src={assests.arrow} alt="arrow" className='arrow2' />
       <div className="rs-profile">
         <img src={chatuser.userData.avatar} alt="profile" />
         <h3>{chatuser.userData.name}{Date.now()-chatuser.userData.lastSeen<=7000?<img src={assests.dot} className='dot' alt="active" />:""}</h3>
@@ -25,6 +26,7 @@ const RightSidebar = () => {
       </div>
       <hr />
       <div className="rs-media">
+
         <p>Media</p>
         <div>
           {mssgImages.map((url,index)=>(

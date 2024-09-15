@@ -10,6 +10,7 @@ import search from './search.png'
 import send from './send.png'
 import logo from './logo.png'
 import profile from './profile.jpg'
+import menu1 from './menu1.png'
 const assests = {
     add,
     arrow,
@@ -22,6 +23,7 @@ const assests = {
     search,
     send,
     logo,
-    profile
+    profile,
+    menu1
 }
 export default assests
