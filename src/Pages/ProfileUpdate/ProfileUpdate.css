@@ -71,7 +71,8 @@ textarea {
 }
 
 @media(max-width:900px) {
-    .profile {
+    .profile-container {
         flex-direction: column;
+        min-width: 200px;
     }
 }

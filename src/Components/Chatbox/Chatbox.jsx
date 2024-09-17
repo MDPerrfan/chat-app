@@ -173,8 +173,7 @@ const Chatbox = () => {
             }
             <div>
               <img src={msg.sId === userData.id ? userData.avatar : chatuser.userData.avatar} alt="profile" />
-              {console.log(chatuser.userData.avatar,"reciever")}
-              {console.log(userData.avatar,"sender")}
+      
               <p>{convertTimeStamp(msg.createdAt)}</p>
             </div>
           </div>

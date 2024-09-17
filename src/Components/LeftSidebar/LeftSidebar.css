@@ -117,16 +117,17 @@
     display: block;
 }
 
-.friends .border img {
-    border: 3px solid #07fff3;
+.border img {
+    border: 3px solid #ff5507;
 }
 
-.friends .border div span {
-    color: #07fff3;
+.border div span {
+    color: #ff6a07;
 }
 
 @media(max-width:900px) {
     .ls {
         width: 100%;
+        height: 100vh;
     }
 }

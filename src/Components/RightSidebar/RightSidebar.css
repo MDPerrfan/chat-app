@@ -89,6 +89,7 @@
     }
     .rs {
         width: 100%;
+        height: 100vh;
     }
     .arrow2 {
         display: block;

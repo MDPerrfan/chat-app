@@ -3,7 +3,7 @@ import "./Login.css"
 import assests from '../../assets/assests'
 import { login, signUp, resetPass } from "../../Config/firebase"
 const Login = () => {
-    const [curr, setCurrent] = useState("Sign Up");
+    const [curr, setCurrent] = useState("Login");
     const [userName, setuserName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");

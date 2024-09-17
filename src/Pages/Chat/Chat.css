@@ -17,6 +17,7 @@
 @media(max-width:900px) {
     .chat-container {
         display: flex;
+        height: 100vh;
     }
     .loading {
         font-size: 15px;
