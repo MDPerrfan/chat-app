@@ -1,5 +1,3 @@
-Here's a README template for your **Chat App** built with the **MERN stack** and **Firebase authentication**:
-
 ```markdown
 # Chat App
 
