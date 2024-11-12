@@ -100,7 +100,6 @@ Here’s a screenshot of the chat interface:
 
 ![Chat App Screenshot](https://raw.githubusercontent.com/MDPerrfan/React-Portfolio/refs/heads/main/src/Assets/Projects/Screenshot_2.jpg)
 
-*(Replace with the actual path or URL to your screenshot)*
 
 ## Contributing
 
